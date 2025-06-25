@@ -1,14 +1,30 @@
-"use client"
+import { useState, useMemo } from "react";
+import { Search, Filter, MoreHorizontal } from "lucide-react";
 
-import { useState, useMemo } from "react"
-import { Search, Filter, MoreHorizontal } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Sample data for the dashboard
 const sampleData = [
@@ -68,7 +84,13 @@ const sampleData = [
     department: "Engineering",
     joinDate: "2023-08-30",
   },
-  { id: 9, name: "Chris Lee", email: "chris@example.com", department: "HR", joinDate: "2023-09-14" },
+  {
+    id: 9,
+    name: "Chris Lee",
+    email: "chris@example.com",
+    department: "HR",
+    joinDate: "2023-09-14",
+  },
   {
     id: 10,
     name: "Emma Taylor",
@@ -97,47 +119,50 @@ const sampleData = [
     department: "HR",
     joinDate: "2024-01-17",
   },
-]
+];
 
 export default function Dashboard() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [departmentFilter, setDepartmentFilter] = useState("all")
-  const [monthFilter, setMonthFilter] = useState("all")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [departmentFilter, setDepartmentFilter] = useState("all");
+  const [monthFilter, setMonthFilter] = useState("all");
 
   // Get unique departments for the dropdown
   const departments = useMemo(() => {
-    const uniqueDepartments = [...new Set(sampleData.map((item) => item.department))]
-    return uniqueDepartments
-  }, [])
+    const uniqueDepartments = [...new Set(sampleData.map((item) => item.department))];
+    return uniqueDepartments;
+  }, []);
 
   // Get unique months for the dropdown
   const months = useMemo(() => {
     const uniqueMonths = [
       ...new Set(
         sampleData.map((item) => {
-          const date = new Date(item.joinDate)
-          return date.toLocaleString("default", { month: "long", year: "numeric" })
-        }),
+          const date = new Date(item.joinDate);
+          return date.toLocaleString("default", { month: "long", year: "numeric" });
+        })
       ),
-    ]
-    return uniqueMonths.sort()
-  }, [])
+    ];
+    return uniqueMonths.sort();
+  }, []);
 
   // Filter data based on search term and dropdown filters
   const filteredData = useMemo(() => {
     return sampleData.filter((item) => {
       const matchesSearch =
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase())
+        item.email.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesDepartment = departmentFilter === "all" || item.department === departmentFilter
+      const matchesDepartment = departmentFilter === "all" || item.department === departmentFilter;
 
-      const itemMonth = new Date(item.joinDate).toLocaleString("default", { month: "long", year: "numeric" })
-      const matchesMonth = monthFilter === "all" || itemMonth === monthFilter
+      const itemMonth = new Date(item.joinDate).toLocaleString("default", {
+        month: "long",
+        year: "numeric",
+      });
+      const matchesMonth = monthFilter === "all" || itemMonth === monthFilter;
 
-      return matchesSearch && matchesDepartment && matchesMonth
-    })
-  }, [searchTerm, departmentFilter, monthFilter])
+      return matchesSearch && matchesDepartment && matchesMonth;
+    });
+  }, [searchTerm, departmentFilter, monthFilter]);
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -265,5 +290,5 @@ export default function Dashboard() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
