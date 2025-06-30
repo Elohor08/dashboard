@@ -19,6 +19,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -28,6 +34,8 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [monthFilter, setMonthFilter] = useState("all");
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -191,91 +199,44 @@ export default function Dashboard() {
           </Button>
         </div>
 
-        {/* Data Table */}
+        {/* Table with borders */}
         <Card>
           <CardContent className="p-0 overflow-auto">
-            <Table>
+            <Table className="border border-gray-300">
               <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Went Well</TableHead>
-                  <TableHead>Didn't Go Well</TableHead>
-                  <TableHead>Challenges</TableHead>
-                  <TableHead>Lessons</TableHead>
-                  <TableHead>ShoutOuts</TableHead>
-                  <TableHead>Start Doing</TableHead>
-                  <TableHead>Stop Doing</TableHead>
-                  <TableHead>Continue Doing</TableHead>
-                  <TableHead>Follow Up</TableHead>
-                  <TableHead>Team Collab</TableHead>
-                  <TableHead>Cross Team</TableHead>
-                  <TableHead>Work Life</TableHead>
-                  <TableHead>Productivity</TableHead>
-                  <TableHead>Org Input</TableHead>
-                  <TableHead>Date</TableHead>
+                <TableRow className="border-b border-gray-300">
+                  <TableHead className="border border-gray-200 px-4 py-2">Name</TableHead>
+                  <TableHead className="border border-gray-200 px-4 py-2">Department</TableHead>
+                  <TableHead className="border border-gray-200 px-4 py-2">Date</TableHead>
+                  <TableHead className="border border-gray-200 px-4 py-2">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.length > 0 ? (
                   filteredData.map((item, index) => (
-                    <TableRow key={item._id || index}>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.fullName}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.department}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.wentWell}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.didntGoWell}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.challenges}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.lessons}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.shoutOuts}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.startDoing}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.stopDoing}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.continueDoing}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.followUp}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.ratings?.teamCollab || "-"}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.ratings?.crossTeamCollab || "-"}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.ratings?.workLifeBalance || "-"}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.ratings?.productivity || "-"}
-                      </TableCell>
-                      <TableCell className="whitespace-normal break-words">
-                        {item.ratings?.orgInput || "-"}
-                      </TableCell>
-                      <TableCell>
+                    <TableRow key={item._id || index} className="border-b border-gray-200">
+                      <TableCell className="border border-gray-200 px-4 py-2">{item.fullName}</TableCell>
+                      <TableCell className="border border-gray-200 px-4 py-2">{item.department}</TableCell>
+                      <TableCell className="border border-gray-200 px-4 py-2">
                         {new Date(item.createdAt).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell className="border border-gray-200 px-4 py-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedItem(item);
+                            setIsDialogOpen(true);
+                          }}
+                        >
+                          View More
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={17} className="text-center py-8">
+                    <TableCell colSpan={4} className="text-center py-8">
                       No records found.
                     </TableCell>
                   </TableRow>
@@ -285,6 +246,33 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Dialog for more details */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Details for {selectedItem?.fullName}</DialogTitle>
+          </DialogHeader>
+          {selectedItem && (
+            <div className="space-y-2 text-sm">
+              <p><strong>Went Well:</strong> {selectedItem.wentWell}</p>
+              <p><strong>Didn't Go Well:</strong> {selectedItem.didntGoWell}</p>
+              <p><strong>Challenges:</strong> {selectedItem.challenges}</p>
+              <p><strong>Lessons:</strong> {selectedItem.lessons}</p>
+              <p><strong>ShoutOuts:</strong> {selectedItem.shoutOuts}</p>
+              <p><strong>Start Doing:</strong> {selectedItem.startDoing}</p>
+              <p><strong>Stop Doing:</strong> {selectedItem.stopDoing}</p>
+              <p><strong>Continue Doing:</strong> {selectedItem.continueDoing}</p>
+              <p><strong>Follow Up:</strong> {selectedItem.followUp}</p>
+              <p><strong>Team Collab:</strong> {selectedItem.ratings?.teamCollab || "-"}</p>
+              <p><strong>Cross Team:</strong> {selectedItem.ratings?.crossTeamCollab || "-"}</p>
+              <p><strong>Work Life:</strong> {selectedItem.ratings?.workLifeBalance || "-"}</p>
+              <p><strong>Productivity:</strong> {selectedItem.ratings?.productivity || "-"}</p>
+              <p><strong>Org Input:</strong> {selectedItem.ratings?.orgInput || "-"}</p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
