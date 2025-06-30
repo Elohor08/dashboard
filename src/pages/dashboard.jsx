@@ -28,6 +28,7 @@ import {
 
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import logo from "../../src/assets/kinpluslogo.png";
 
 export default function Dashboard() {
   const [data, setData] = useState([]);
@@ -130,7 +131,7 @@ export default function Dashboard() {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex flex-col space-y-4">
         <div className="flex flex-wrap items-center justify-between">
-          <img style={{ width: "120px" }} src="../../src/assets/kinpluslogo.png" alt="" />
+          <img style={{ width: "120px" }} src={logo} />
           <h1 className="text-3xl font-bold">Feedback Dashboard</h1>
            <h1 className="text-[15px] hidden md:block">www.kinplusgroup.com</h1>
         </div>
