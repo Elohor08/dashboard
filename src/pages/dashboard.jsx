@@ -129,7 +129,11 @@ export default function Dashboard() {
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex flex-col space-y-4">
-        <h1 className="text-3xl font-bold">Feedback Dashboard</h1>
+        <div className="flex flex-wrap items-center justify-between">
+          <img style={{ width: "120px" }} src="../../src/assets/kinpluslogo.png" alt="" />
+          <h1 className="text-3xl font-bold">Feedback Dashboard</h1>
+           <h1 className="text-[15px] hidden md:block">www.kinplusgroup.com</h1>
+        </div>
 
         {/* Filters */}
         <Card>
@@ -205,18 +209,33 @@ export default function Dashboard() {
             <Table className="border border-gray-300">
               <TableHeader>
                 <TableRow className="border-b border-gray-300">
-                  <TableHead className="border border-gray-200 px-4 py-2">Name</TableHead>
-                  <TableHead className="border border-gray-200 px-4 py-2">Department</TableHead>
-                  <TableHead className="border border-gray-200 px-4 py-2">Date</TableHead>
-                  <TableHead className="border border-gray-200 px-4 py-2">Action</TableHead>
+                  <TableHead className="border border-gray-200 px-4 py-2">
+                    Name
+                  </TableHead>
+                  <TableHead className="border border-gray-200 px-4 py-2">
+                    Department
+                  </TableHead>
+                  <TableHead className="border border-gray-200 px-4 py-2">
+                    Date
+                  </TableHead>
+                  <TableHead className="border border-gray-200 px-4 py-2">
+                    Action
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.length > 0 ? (
                   filteredData.map((item, index) => (
-                    <TableRow key={item._id || index} className="border-b border-gray-200">
-                      <TableCell className="border border-gray-200 px-4 py-2">{item.fullName}</TableCell>
-                      <TableCell className="border border-gray-200 px-4 py-2">{item.department}</TableCell>
+                    <TableRow
+                      key={item._id || index}
+                      className="border-b border-gray-200"
+                    >
+                      <TableCell className="border border-gray-200 px-4 py-2">
+                        {item.fullName}
+                      </TableCell>
+                      <TableCell className="border border-gray-200 px-4 py-2">
+                        {item.department}
+                      </TableCell>
                       <TableCell className="border border-gray-200 px-4 py-2">
                         {new Date(item.createdAt).toLocaleDateString()}
                       </TableCell>
@@ -255,20 +274,53 @@ export default function Dashboard() {
           </DialogHeader>
           {selectedItem && (
             <div className="space-y-2 text-sm">
-              <p><strong>Went Well:</strong> {selectedItem.wentWell}</p>
-              <p><strong>Didn't Go Well:</strong> {selectedItem.didntGoWell}</p>
-              <p><strong>Challenges:</strong> {selectedItem.challenges}</p>
-              <p><strong>Lessons:</strong> {selectedItem.lessons}</p>
-              <p><strong>ShoutOuts:</strong> {selectedItem.shoutOuts}</p>
-              <p><strong>Start Doing:</strong> {selectedItem.startDoing}</p>
-              <p><strong>Stop Doing:</strong> {selectedItem.stopDoing}</p>
-              <p><strong>Continue Doing:</strong> {selectedItem.continueDoing}</p>
-              <p><strong>Follow Up:</strong> {selectedItem.followUp}</p>
-              <p><strong>Team Collab:</strong> {selectedItem.ratings?.teamCollab || "-"}</p>
-              <p><strong>Cross Team:</strong> {selectedItem.ratings?.crossTeamCollab || "-"}</p>
-              <p><strong>Work Life:</strong> {selectedItem.ratings?.workLifeBalance || "-"}</p>
-              <p><strong>Productivity:</strong> {selectedItem.ratings?.productivity || "-"}</p>
-              <p><strong>Org Input:</strong> {selectedItem.ratings?.orgInput || "-"}</p>
+              <p>
+                <strong>Went Well:</strong> {selectedItem.wentWell}
+              </p>
+              <p>
+                <strong>Didn't Go Well:</strong> {selectedItem.didntGoWell}
+              </p>
+              <p>
+                <strong>Challenges:</strong> {selectedItem.challenges}
+              </p>
+              <p>
+                <strong>Lessons:</strong> {selectedItem.lessons}
+              </p>
+              <p>
+                <strong>ShoutOuts:</strong> {selectedItem.shoutOuts}
+              </p>
+              <p>
+                <strong>Start Doing:</strong> {selectedItem.startDoing}
+              </p>
+              <p>
+                <strong>Stop Doing:</strong> {selectedItem.stopDoing}
+              </p>
+              <p>
+                <strong>Continue Doing:</strong> {selectedItem.continueDoing}
+              </p>
+              <p>
+                <strong>Follow Up:</strong> {selectedItem.followUp}
+              </p>
+              <p>
+                <strong>Team Collab:</strong>{" "}
+                {selectedItem.ratings?.teamCollab || "-"}
+              </p>
+              <p>
+                <strong>Cross Team:</strong>{" "}
+                {selectedItem.ratings?.crossTeamCollab || "-"}
+              </p>
+              <p>
+                <strong>Work Life:</strong>{" "}
+                {selectedItem.ratings?.workLifeBalance || "-"}
+              </p>
+              <p>
+                <strong>Productivity:</strong>{" "}
+                {selectedItem.ratings?.productivity || "-"}
+              </p>
+              <p>
+                <strong>Org Input:</strong>{" "}
+                {selectedItem.ratings?.orgInput || "-"}
+              </p>
             </div>
           )}
         </DialogContent>
