@@ -131,7 +131,7 @@ export default function Dashboard() {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex flex-col space-y-4">
         <div className="flex flex-wrap items-center justify-between">
-          <img style={{ width: "120px" }} src={logo} />
+          <img style={{ width: "120px", height: "auto" }} src={logo} alt="KinPlus Logo" />
           <h1 className="text-3xl font-bold">Feedback Dashboard</h1>
            <h1 className="text-[15px] hidden md:block">www.kinplusgroup.com</h1>
         </div>
